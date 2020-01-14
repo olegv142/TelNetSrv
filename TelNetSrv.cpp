@@ -37,10 +37,10 @@ void TelNetSrv::serve()
 					cmd_byte = true;
 				else {
 					// enforce max message size limitation
-					if (m_buff.length() <= m_max_size)
-						m_buff += (char)b;
+					if (m_rx_buff.length() <= m_max_rx)
+						m_rx_buff += (char)b;
 					else
-						m_buff[m_max_size] = (char)b;
+						m_rx_buff[m_max_rx] = (char)b;
 				}
 			}
 		}
@@ -50,9 +50,9 @@ void TelNetSrv::serve()
 
 bool TelNetSrv::has_line() const
 {
-	if (!m_buff)
+	if (!m_rx_buff)
 		return false;
-	switch (m_buff[m_buff.length() - 1]) {
+	switch (m_rx_buff[m_rx_buff.length() - 1]) {
 	case '\n':
 	case '\r':
 		return true;

@@ -41,9 +41,10 @@ void setup()
 void loop() {
   g_telnet_srv.serve();
 
-  String cmd;
-  if (!g_telnet_srv.get_line(cmd))
+  if (!g_telnet_srv.has_line())
     return;
 
-  g_telnet_srv.print(cmd);
+  g_telnet_srv.print(g_telnet_srv.get_buff());
+  g_telnet_srv.clr_buff();
+  g_telnet_srv.flush();
 }
