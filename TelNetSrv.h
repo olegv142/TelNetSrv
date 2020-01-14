@@ -21,6 +21,7 @@ public:
 
 	// Buffer access methods
 	String const&  get_buff() const { return m_rx_buff; };
+	String&        get_buff() { return m_rx_buff; };
 	void           clr_buff() { m_rx_buff = String(); }
 	bool           has_line() const;
 
@@ -36,8 +37,11 @@ public:
 			}
 
 	// Flush transmit buffer
-	void          flush() { respond(m_tx_buff); m_tx_buff = String(); }
-
+	void          flush() { if (m_tx_buff.length()) {
+					respond(m_tx_buff);
+					m_tx_buff = String();
+				}
+			}
 protected:
 	EthernetServer m_srv;
 	EthernetClient m_clnt;
