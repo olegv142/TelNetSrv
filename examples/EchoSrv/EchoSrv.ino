@@ -5,6 +5,7 @@
 #include "TelNetSrv.h"
 #include "avr/boot.h"
 
+#define HOSTNAME "EchoSrv"
 #define DHCP_TOUT 10000
 #define TELNET_PORT 23
 #define MAX_CMD_LEN 32
@@ -23,7 +24,7 @@ void telnet_setup()
   };
   mac[0] &= ~1;
   mac[0] |= 2;
-  if (Ethernet.begin(mac, DHCP_TOUT)) {
+  if (Ethernet.begin(mac, HOSTNAME, DHCP_TOUT)) {
     Serial.print("IP: ");
     Serial.println(Ethernet.localIP());
     g_telnet_srv.start();
