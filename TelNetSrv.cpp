@@ -9,6 +9,8 @@ void TelNetSrv::serve()
 	if (clnt) {
 		reset();
 		m_clnt = clnt;
+		if (m_conn_cb)
+			m_conn_cb(this);
 	}
 	int avail = m_clnt.available();
 	bool cmd_byte = false, opt_byte = false;

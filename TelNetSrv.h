@@ -9,6 +9,8 @@
 
 class TelNetSrv : public Print {
 public:
+	typedef void (*conn_cb_t)(TelNetSrv*);
+
 	TelNetSrv(uint16_t port, uint16_t max_rx_size, uint8_t max_tx_chunk = 16)
 		: m_srv(port), m_max_rx(max_rx_size), m_max_tx_chunk(max_tx_chunk) {}
 
@@ -17,7 +19,10 @@ public:
 	// Serve requests if any
 	void           serve();
 	// Clear current connection and drop buffer content
+	// It is called automatically on every new connection
 	void           reset() { m_clnt.stop(); clr_buff(); }
+	// Attach callback to called on new connection
+	void           on_connect(conn_cb_t cb) { m_conn_cb = cb; }
 
 	// Buffer access methods
 	String const&  get_buff() const { return m_rx_buff; };
@@ -49,4 +54,5 @@ protected:
 	uint8_t        m_max_tx_chunk;
 	String         m_rx_buff;
 	String         m_tx_buff;
+	conn_cb_t      m_conn_cb;
 };
